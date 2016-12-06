@@ -12,10 +12,35 @@ class ProductTableComponent extends React.Component{
             isShowStock:false
         }
     }
+    getDetailList(filter)
+    {
+        var DataDetailList=this.state.data;
+        return DataDetailList.filter(function(element){
+            return element.category===filter;
+        }).map(function(li,index){
+            //alert(li.name);
+            return <div key={index}>{li.name} ||  {li.price}</div>;
+        })
+    }
+    getProductDataFromJson()
+    {
+        $.get(this.props.url,function(result){
+             if(!this.isShowStock)
+             {
+                this.setState({loading:false,data:result});
+             }
+             else
+             {
+                 let ReturnResut=result.filter(function(ele){
+                     return ele.stocked===this.isShowStock;
+                 })
+                 this.setState({loading:false,data:ReturnResut});
+             }
+        }.bind(this))
+    }
     getProductList(){
         var DataList=this.state.data;
         var ProductType=[];
-        ProductType.push(1);
         /*if(DataList)
         {
             DataList.reduce(function(ProductType,element){
@@ -25,6 +50,14 @@ class ProductTableComponent extends React.Component{
                     return ProductType;
             }.bind(this))
         }*/
+        if(DataList)
+        {
+            DataList.forEach(function(element) {
+                if(ProductType.indexOf(element.category)<0)
+                     ProductType.push(element.category);
+            });
+        }
+
         if(this.state.loading){
             return <span>Loading...</span>;
         }
@@ -34,10 +67,13 @@ class ProductTableComponent extends React.Component{
         }
         else
         {
-           alert(ProductType);
-           return  DataList.map(function(e,i){
-                return <li key={i}>{e.name}   {e.price}</li>
-            })
+            alert(ProductType);
+           return  ProductType.map(function(elem){
+               return <div>
+               <h1>{elem}</h1>
+               {this.getDetailList(elem)}
+               </div>;
+           }.bind(this))
         }
     }
     render(){
@@ -49,7 +85,7 @@ class ProductTableComponent extends React.Component{
         <div><input type="text" placeholder={txtMsg} onChange={this.landleChange.bind(this)}/></div>
         <div><label><input type="checkbox" placeholder={txtMsg} checked={isShow} onChange={this.landleChange.bind(this)}/>only show product in stocks</label></div>
         <div>
-          <ul> {this.getProductList()}</ul>
+           {this.getProductList()}
         </div>
         </div>);
     }
@@ -60,14 +96,22 @@ class ProductTableComponent extends React.Component{
         {
             console.log(event.target.value);
             this.setState({filterMsg:event.target.value});
+            getProductDataFromJson();
         }
         else if(event.target.type=="checkbox")
         {
             console.log(event.target.checked);
             this.setState({isShowStock:event.target.checked});
+            getProductDataFromJson();
         }
         
         
+    }
+    componentWillUpdate(){
+        console.log('componentWillUpdate start!');
+    }
+    componentDidUpdate(){
+        console.log('componentDidUpdate start!');
     }
 
     //设置样式style={{opacity: this.state.opacity}}
@@ -81,7 +125,17 @@ class ProductTableComponent extends React.Component{
         .fail(error=>this.setState({loading:false,error:error}));*/
 
          $.get(this.props.url,function(result){
-           this.setState({loading:false,data:result});
+             if(!this.isShowStock)
+             {
+                this.setState({loading:false,data:result});
+             }
+             else
+             {
+                 let ReturnResut=result.filter(function(ele){
+                     return ele.stocked===this.isShowStock;
+                 })
+                 this.setState({loading:false,data:ReturnResut});
+             }
         }.bind(this))
 
         //alert(this.state.loading);

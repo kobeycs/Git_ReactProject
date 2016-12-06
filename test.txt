@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 this is branch file!
+=======
+this is a  demo !
+this sencond modify!
+>>>>>>> fffade1989516596e0d24b1b4c143a3325d1acdc

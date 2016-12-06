@@ -97,7 +97,7 @@ class TestComponent extends React.Component{
         
         this.props.promise.then(value=>this.setState({loading:false,data:value}),
                                 error=>this.setState({loading:false,error:error}));
-        alert(JSON.stringify(this.state.data));
+        //alert(JSON.stringify(this.state.data));
         $.get(this.props.source,function(result){
             //alert(result);
             var lastgist=result;

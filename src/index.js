@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/Main';
 import Test from './components/test';
+import Demo01 from './components/Demo01';
 import $ from './jquery';
 import ProductTable from './components/Product';
 
@@ -16,3 +17,6 @@ ReactDOM.render(<Test name="叶存松" sex="女" title={number} source="test.jso
 
 //Product filter test
 ReactDOM.render(<ProductTable url="data.json" promise={$.getJSON('data.json')} ></ProductTable>,document.getElementById("Product"));
+
+//Demo01
+ReactDOM.render(<Demo01 />,document.getElementById('Demo01DIV'));

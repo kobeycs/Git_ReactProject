@@ -25,17 +25,22 @@ class ProductTableComponent extends React.Component{
     getProductDataFromJson()
     {
         $.get(this.props.url,function(result){
-             if(!this.isShowStock)
+            let ReturnResut;
+             if(!this.state.isShowStock)
              {
-                this.setState({loading:false,data:result});
+                ReturnResut=result.filter(function(ele){
+                     return (!this.state.filterMsg || ele.name.toLowerCase().indexOf(this.state.filterMsg.toLowerCase())>-1);
+                 }.bind(this))
              }
              else
              {
-                 let ReturnResut=result.filter(function(ele){
-                     return ele.stocked===this.isShowStock;
-                 })
-                 this.setState({loading:false,data:ReturnResut});
+                 ReturnResut=result.filter(function(ele){
+                     return ele.stocked===this.state.isShowStock && (!this.state.filterMsg || ele.name.toLowerCase().indexOf(this.state.filterMsg.toLowerCase())>-1)
+                 }.bind(this)) 
+                 
              }
+             this.setState({loading:false,data:ReturnResut});
+             console.log('展示数据：'+this.state.data);
         }.bind(this))
     }
     getProductList(){
@@ -68,8 +73,8 @@ class ProductTableComponent extends React.Component{
         else
         {
             alert(ProductType);
-           return  ProductType.map(function(elem){
-               return <div>
+           return  ProductType.map(function(elem,index){
+               return <div key={index}>
                <h1>{elem}</h1>
                {this.getDetailList(elem)}
                </div>;
@@ -80,8 +85,9 @@ class ProductTableComponent extends React.Component{
         //var repos;
         var txtMsg="search filter key word!"
         var isShow=this.state.isShowStock;
+        console.log('render active!');
         return (<div className="index">
-        <div className='notice'>product list filter</div>
+        <div className='notice' ref="divref">product list filter</div>
         <div><input type="text" placeholder={txtMsg} onChange={this.landleChange.bind(this)}/></div>
         <div><label><input type="checkbox" placeholder={txtMsg} checked={isShow} onChange={this.landleChange.bind(this)}/>only show product in stocks</label></div>
         <div>
@@ -96,17 +102,28 @@ class ProductTableComponent extends React.Component{
         {
             console.log(event.target.value);
             this.setState({filterMsg:event.target.value});
-            getProductDataFromJson();
+            this.getProductDataFromJson();
         }
         else if(event.target.type=="checkbox")
         {
             console.log(event.target.checked);
             this.setState({isShowStock:event.target.checked});
-            getProductDataFromJson();
+            this.getProductDataFromJson();
         }
         
         
     }
+    //这个方法在类创建时调用，es6 这部分放在构造函数里处理
+    /*
+    getDefaultProps()
+    {
+        console.log('getDefaultProps Start');
+    }*/
+    //这个方法在类创建时调用，es6 这部分放在构造函数里处理
+    /*getInitialState()
+    {
+        console.log('getInitialState start');
+    }*/
     componentWillUpdate(){
         console.log('componentWillUpdate start!');
     }
@@ -114,15 +131,30 @@ class ProductTableComponent extends React.Component{
         console.log('componentDidUpdate start!');
     }
 
+    componentWillUnmount(){
+        console.log('componentWillUnmount start!');
+    }
+    componentWillReceiveProps(){
+        console.log('componentWillReceiveProps start!');
+    }
+    shouldComponentUpdate(){
+        console.log('shouldComponentUpdate start!');
+        return true;
+    }
+
     //设置样式style={{opacity: this.state.opacity}}
     componentDidMount(){
         
+        //这里能获取到组件中dom 的元素
+        //console.log('findDOMNode:'+ReactDOM.findDOMNode(this.refs.divref));
         /*this.props.promise.then(value=>this.setState({loading:false,data:value}),
                                 error=>this.setState({loading:false,error:error}));
         alert(this.state.data);
         
         $.get(this.props.url).done(value=>this.setState({loading:false,data:value}))
         .fail(error=>this.setState({loading:false,error:error}));*/
+
+        console.log('componentDidMount 开始');
 
          $.get(this.props.url,function(result){
              if(!this.isShowStock)

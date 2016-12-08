@@ -9,11 +9,18 @@ let defaultSettings = require('./defaults');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: [
+  /*entry: [
     'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
     'webpack/hot/only-dev-server',
     './src/index'
-  ],
+  ],*/
+  entry: {
+    "app":['webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    'webpack/hot/only-dev-server','./src/index'],
+    'ReduxTest':['webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    'webpack/hot/only-dev-server','./src/ReactRedux'],
+  },
+  
   cache: true,
   devtool: 'eval-source-map',
   plugins: [

@@ -5,7 +5,7 @@ class Demo01 extends React.Component{
     {
         super(props);
         this.state={
-            list:[1,2,3,4]
+            list:[1,2,3,4,6]
         };
         //提高性能
         this.AddItemFromTopNew=this.AddItemFromTop.bind(this);

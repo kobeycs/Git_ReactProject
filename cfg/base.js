@@ -16,7 +16,7 @@ module.exports = {
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
-    filename: 'app.js',
+    filename: '[name].js',
     publicPath: defaultSettings.publicPath
   },
   devServer: {
@@ -39,5 +39,22 @@ module.exports = {
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },
+  //react 不进行打包，免得文件太大'
+  /*externals: [
+        {
+            'react': {
+                root: 'React',
+                commonjs2: 'react',
+                commonjs: 'react'
+            }
+        },
+        {
+            'react-dom': {
+                root: 'ReactDOM',
+                commonjs2: 'react-dom',
+                commonjs: 'react-dom'
+            }
+        }
+    ],*/
   module: {}
 };

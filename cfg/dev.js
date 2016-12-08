@@ -19,6 +19,8 @@ let config = Object.assign({}, baseConfig, {
     'webpack/hot/only-dev-server','./src/index'],
     'ReduxTest':['webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
     'webpack/hot/only-dev-server','./src/ReactRedux'],
+    'ToDoMVC':['webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    'webpack/hot/only-dev-server','./src/ToDoMVC']
   },
   
   cache: true,

@@ -9,7 +9,7 @@ class ReduxDemo extends React.Component{
         super(props);
     }
     render(){
-        return <div className="index"><div className="notice">redux Test 20161201 1234567</div></div>;
+        return <div className="index"><div className="notice">redux Test 20161201</div></div>;
     }
 }
 
